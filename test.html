@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Search API Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      #search-container {
+        margin-bottom: 20px;
+      }
+      .result-item {
+        margin-bottom: 20px;
+      }
+      .result-item img {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Google Search API Test</h1>
+    <div id="search-container">
+      <input type="text" id="search-input" placeholder="Enter search query" />
+      <button id="search-button">Search</button>
+      <button id="next-button">Next</button>
+    </div>
+    <div id="data-container">
+      <p>Enter a search query to see results.</p>
+    </div>
+    <script type="module" src="./src/test.js"></script>
+  </body>
+</html>
