@@ -1,9 +1,11 @@
 {
-  "rewrites": [{ "source": "/", "destination": "/shared.html" }],
-  "functions": {
-    "api/*.js": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  }
+  "version": 2,
+  "builds": [
+    { "src": "api/**/*.js", "use": "@vercel/node" },
+    { "src": "package.json", "use": "@vercel/static-build" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
 }

@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   try {
     const builder = new Builder();
     const xmlContent = builder.buildObject(req.body);
-    const filePath = path.resolve("./public/currentdata.xml");
+    const filePath = path.join(process.cwd(), "public", "currentdata.xml");
 
     fs.writeFileSync(filePath, xmlContent, "utf-8");
 

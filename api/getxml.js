@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 export default async (req, res) => {
-  const filePath = path.resolve("./public/currentdata.xml");
+  const filePath = path.join(process.cwd(), "public", "currentdata.xml");
 
   if (fs.existsSync(filePath)) {
     const xmlContent = fs.readFileSync(filePath, "utf-8");
