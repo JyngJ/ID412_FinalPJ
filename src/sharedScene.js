@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { createRandomRectangle } from "./rectangleBuilder.js";
 import { animate } from "./animationMgr.js";
+import { getData } from "./data/fetchData.js";
+import { saveToXml } from "./data/xmlMgr.js";
 
 // Scene 생성
 const scene = new THREE.Scene();
@@ -33,7 +35,7 @@ function updateRendererAndCamera() {
   // 렌더러 크기 업데이트
   renderer.setSize(width, height);
   renderer.domElement.style.width = `${width}px`; // CSS 가로 길이 설정
-  renderer.domElement.style.height = `${height}px`; // CSS 세로 길이 설정
+  renderer.domElement.style.height = `${height}px`; // CSS 세로 길이 설���
 
   // Orthographic 카메라 설정
   const aspectRatio = width / height;
@@ -60,8 +62,18 @@ document.body.appendChild(renderer.domElement); // 렌더러 DOM 추가
 // 창 크기 변경에 따른 처리
 window.addEventListener("resize", updateRendererAndCamera);
 
-// 일정 간격으로 직사각형 생성
-setInterval(() => createRandomRectangle(scene), 1000); // 1초마다 상자 생성
+// 초기 데이터 로드 함수
+async function initializeData() {
+  const query = "Is web dying?";
+  const searchResults = await getData(query);
+  await saveToXml(query, searchResults, "initialize");
+
+  // 데이터 로드 후 상자 생성 시작
+  setInterval(() => createRandomRectangle(scene), 1000);
+}
+
+// 초기화 실행
+initializeData();
 
 // 애니메이션 시작
 animate(scene, renderer, camera);

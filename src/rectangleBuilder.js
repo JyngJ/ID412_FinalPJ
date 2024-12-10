@@ -1,6 +1,26 @@
 import * as THREE from "three";
+import { parseString } from "xml2js";
 
-const rectangles = []; // 직사각형 객체 리스트
+const rectangles = [];
+let xmlData = null;
+
+// XML 데이터 로드 함수
+async function loadXmlData() {
+  try {
+    const response = await fetch("/api/getxml");
+    const xmlContent = await response.text();
+
+    return new Promise((resolve, reject) => {
+      parseString(xmlContent, (err, result) => {
+        if (err) reject(err);
+        else resolve(result.search.results);
+      });
+    });
+  } catch (error) {
+    console.error("XML 데이터 로드 실패:", error);
+    return null;
+  }
+}
 
 // 텍스트를 줄바꿈 처리하는 헬퍼 함수
 function wrapText(text, maxLineLength) {
@@ -37,17 +57,14 @@ function calculateTextDimensions(text, fontSize = 18) {
   return { width, height };
 }
 
-const dummyData = Array.from({ length: 10 }, () => ({
-  title: "This is a dummy title for google search",
-  image:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR_hG_gUvQyLjCxYFE7crTd4w2F7CtXgxHzg&s",
-  snippet:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-}));
+// dummyData 제거하고 실제 데이터 사용
+export async function createRandomRectangle(scene) {
+  if (!xmlData) {
+    xmlData = await loadXmlData();
+    if (!xmlData) return;
+  }
 
-// 랜덤 3D 상자 생성 함수
-export async function createRandomRectangle(scene, data = dummyData) {
-  const randomData = data[Math.floor(Math.random() * data.length)];
+  const randomData = xmlData[Math.floor(Math.random() * xmlData.length)];
   const choice = Math.random();
   let face = Math.floor(Math.random() * 3); // 0 = X, 1 = Y, 2 = Z
   let boxDimensions, mappedMaterial;
@@ -150,7 +167,7 @@ export async function createRandomRectangle(scene, data = dummyData) {
   rectangles.push(rectangle);
 }
 
-// 현재 상자 리스트 반환
+// 현재 상자 리스트 ��환
 export function getRectangles() {
   return rectangles;
 }
