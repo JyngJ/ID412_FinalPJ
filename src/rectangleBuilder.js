@@ -8,6 +8,9 @@ let xmlData = null;
 async function loadXmlData() {
   try {
     const response = await fetch("/api/getxml");
+    if (!response.ok) {
+      throw new Error(`Failed to load XML data: ${response.statusText}`);
+    }
     const xmlContent = await response.text();
 
     return new Promise((resolve, reject) => {
@@ -167,7 +170,7 @@ export async function createRandomRectangle(scene) {
   rectangles.push(rectangle);
 }
 
-// 현재 상자 리스트 ��환
+// 현재 상자 리스트 반환
 export function getRectangles() {
   return rectangles;
 }

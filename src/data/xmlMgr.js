@@ -18,7 +18,7 @@ export async function saveToXml(query, searchResults, mode = "initialize") {
       },
     };
 
-    // API를 통해 서버에 데이터 저장
+    // API 경로 수정
     const response = await fetch("/api/savexml", {
       method: "POST",
       headers: {
@@ -28,7 +28,7 @@ export async function saveToXml(query, searchResults, mode = "initialize") {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to save XML data");
+      throw new Error(`Failed to save XML data: ${response.statusText}`);
     }
 
     console.log(
@@ -38,5 +38,6 @@ export async function saveToXml(query, searchResults, mode = "initialize") {
     );
   } catch (error) {
     console.error("Error saving XML:", error);
+    throw error;
   }
 }
