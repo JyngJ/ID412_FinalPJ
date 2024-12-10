@@ -1,3 +1,9 @@
 {
-  "rewrites": [{ "source": "/", "destination": "/shared.html" }]
+  "rewrites": [{ "source": "/", "destination": "/shared.html" }],
+  "functions": {
+    "api/*.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  }
 }
